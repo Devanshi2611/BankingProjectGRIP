@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Banking App</title>
+  <link rel="stylesheet" href="/Bank.css">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous"
+    referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <div class="main">
+    <div id="ellipse"> </div>
+    <div class="starting">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a>Transaction</a></li>
+        <li><a href="transfer.html">Money Transfer</a></li>
+      </ul>
+    </div>
+    <div class="cardLog">
+      <div id='login'>
+        <form>
+          <h2 class="log">USER LOGIN</h2>
+          <i id="icons" class="far fa-user fa-1x"></i> <input id='uid' placeholder="Enter UserID" type="text">
+          <br />
+          <i id="icons" class="far fa-paper-plane fa-1x"></i><input placeholder="Enter Your Email" type="email">
+          <br />
+          <button id='loginA'>LOGIN</button>
+
+        </form>
+      </div>
+
+
+      <div id='home'>
+        <i id="cust" class="fas fa-user-circle fa-4x"></i>
+        <h1>Are You have <br />Successfully Logged In</h1>
+        <br />
+        <i id="icons" class="fas fa-backward fa-1x"></i> <a class="back" href="transfer.html">Go to Transfer Page</a>
+        <br />
+        <button id='logout'>Log Out</button>
+      </div>
+    </div>
+  </div>
+  <div class="Footer">
+    &copy; Devanshi Patel
+  </div>
+
+</body>
+
+</html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script>
+  $.post('/isLogged', function(data) {
+    if (data != "0") {
+      $("#home").show();
+      $("#login").remove();
+      $("#logout").click(() => {
+        $.post('logout', (d) => {
+          location.reload();
+        });
+      })
+    } else {
+      $("#login").show();
+      $("#home").remove();
+      $("#loginA").click(() => {
+        $.post('login', {
+          uid: $("#uid").val()
+        }, (d) => {
+          location.reload();
+        });
+      })
+    }
+  })
+</script>

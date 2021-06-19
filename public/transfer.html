@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Banking App</title>
+  <link rel="stylesheet" href="/Bank.css">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
+  <style>
+  td,th {
+      padding: 10px;
+  }
+
+  table {
+      border-collapse: collapse;
+  }
+
+.transferPage {
+      position: absolute;
+      top: 10vh;
+      left: 25vw;
+}
+
+h3 {
+      text-align: center;
+      font-weight: bolder;
+}
+
+button {
+      background-color: #EEEEEE;
+      color: black;
+      border-radius: 40px;
+      border: 0px solid black;
+      padding: 5px 10px;
+      cursor: pointer;
+      width: 100px;
+}
+
+button:hover {
+      background-color: black;
+      color: white;
+      transition: 0.2s;
+      transition-timing-function: ease-in;
+}
+
+h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #0C4271;
+}
+  </style>
+</head>
+
+<body>
+  <div class="main">
+    <div id="ellipse"> </div>
+    <div class="starting">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a>Transaction</a></li>
+        <li><a href="transfer.html">Money Transfer</a></li>
+        <li><a href="login.html">Logout</a></li>
+      </ul>
+    </div>
+
+    <div class="transferPage">
+      <h1>Your Transaction Details</h1>
+      <h3 class="balance">Your Balance is : <span id='bal'></span></h3>
+      <br>
+      <table border=1>
+        <thead>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Balance</th>
+          <th>Operations</th>
+          <th>Action</th>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="Footer">
+    &copy; Devanshi Patel
+  </div>
+</body>
+</html>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script>
+  $.post('isLogged', function(dataA) {
+    if (dataA != "0") {
+      $.post("cBal", (dataW) => {
+        $("#bal").text(dataW)
+      });
+      $.post('getAll', (data) => {
+        var str = "";
+        for (i in data) {
+          str += "<tr>";
+          for (k in data[i]) str += "<td>" + (data[i][k]) + "</td>";
+          str += "<td><button id='" + data[i]["id"] + "'>Transfer</button></td></tr>";
+          // console.log(data[i]);
+        }
+        $("tbody").html(str);
+        $("button").click(function() {
+          $.post("setTran", {
+            id: $(this).attr("id")
+          }, (data) => {
+            if (data.toString() == "1") location.assign('transaction.html');
+          });
+        });
+      })
+    } else {
+      location.assign('index.html');
+    }
+  })
+</script>
